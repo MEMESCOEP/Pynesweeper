@@ -6,6 +6,7 @@ Minesweeper in python 3.10
 
 ---
 <br/>
+
 ### Building EXE:
 >  In order to build pynesweeper into an EXE, you need to have a few things installed. check requirements.txt for more info.
 
