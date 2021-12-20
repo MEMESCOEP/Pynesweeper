@@ -122,7 +122,7 @@ try:
                         if UseTimer == True and StartTimer == True:
                             timePassed += 1
                             if Debug == 1:
-                                print("Seconds Passed: {}".format(timePassed))
+                                print("[INFO] >> Seconds Passed: {}".format(timePassed))
                         
                         
 
@@ -238,7 +238,7 @@ try:
                                 ex = None
                                 ex = Window()
                                 if(Debug == 1):
-                                        print("<Difficulty changed to easy>")
+                                        print("[INFO] >> <Difficulty changed to easy>")
                                 currentDifficulty = 0
                                 SwitchingDiff = False
                         
@@ -258,7 +258,7 @@ try:
                                 ex = None
                                 ex = Window()
                                 if(Debug == 1):
-                                        print("<Difficulty changed to normal>")
+                                        print("[INFO] >> <Difficulty changed to normal>")
                                 currentDifficulty = 1
                                 SwitchingDiff = False
 
@@ -278,7 +278,7 @@ try:
                                 ex = None
                                 ex = Window()
                                 if(Debug == 1):
-                                        print("<Difficulty changed to hard>")
+                                        print("[INFO] >> <Difficulty changed to hard>")
                                 currentDifficulty = 2
                                 SwitchingDiff = False
 
@@ -301,9 +301,9 @@ try:
                                         ex = None
                                         ex = Window()
                                         if(Debug == 1):
-                                                print("<Difficulty changed to custom ({} tiles per row)>".format(cellNum))
+                                                print("[INFO] >> <Difficulty changed to custom ({} tiles per row)>".format(cellNum))
                                                 if cellNum > 25:
-                                                    print("[ WARNING! ]\n\tUsing large grid sizes will result in slowdowns!")
+                                                    print("[ WARNING! ] >> Using large grid sizes will result in slowdowns! << [ WARNING! ]")
                                         SwitchingDiff = False     
                                 else:
                                         print("Invalid entry!")
@@ -463,9 +463,9 @@ try:
                         if StartTimer == False:
                             StartTimer = True
                             if Debug == 1:
-                                print("Timer Started.")
+                                print("[INFO] >> Timer Started.")
                         if(Debug == 1):
-                                print("Mouse right clicked at ({},{})".format(row, column))
+                                print("[INFO] >> Mouse right clicked at ({},{})".format(row, column))
                         # check for flags
                         if self.initialArray[int(row)][int(column)] == 19:
                             # flag present therefore remove flag
@@ -494,7 +494,7 @@ try:
                 global Debug
                 global timePassed
                 if(Debug == 1):
-                        print("Starting new game with {} tiles per row.".format(self.cells))
+                        print("[INFO] >> Starting new game with {} tiles per row.".format(self.cells))
                 
                 # reset counter of turns and timer
                 self.counterTurns = 0
@@ -544,7 +544,7 @@ try:
                 
                 
                 if(Debug == 1):
-                        print("{} bombs added.".format(numofBombs))
+                        print("[INFO] >> {} bombs added.".format(numofBombs))
 
                 
             def message_button(self):
@@ -562,12 +562,12 @@ try:
                 if StartTimer == False:
                             StartTimer = True
                             if Debug == 1:
-                                print("Timer Started.")
+                                print("[INFO] >> Timer Started.")
                 
                 # change number of turns
                 self.counterTurns += 1
                 if(Debug == 1):
-                        print("Mouse left clicked at ({},{})".format(row, column))
+                        print("[INFO] >> Mouse left clicked at ({},{})".format(row, column))
 
                 # if the value is 19, a flag is on the button and the button can not be pressed
                 if self.initialArray[row][column] != 19:
@@ -577,7 +577,7 @@ try:
                         game_busy = 0
                         message = "Game over, better luck next time!"
                         if(Debug == 1):
-                                print("Player lost after {} turns.".format(self.counterTurns))
+                                print("[INFO] >> Player lost after {} turns.".format(self.counterTurns))
 
                     else:
                         # call method to display all the empty cells (value=0)
@@ -607,7 +607,7 @@ try:
 
                         # pop-up when the game is finished
                         if(message == "Congratulations, you won!" and Debug == 1):
-                                print("Player won after {} turns.".format(self.counterTurns))
+                                print("[INFO] >> Player won after {} turns.".format(self.counterTurns))
 
                         UseTimer = False
                         game_finished = QMessageBox()
@@ -680,7 +680,7 @@ try:
             rw = 0
             def update_display(self):
                 if(Debug == 1):
-                                print("[Updating Cells...]")
+                                print("[INFO] >> [Updating Cells...]")
                             
                 for column in range(self.cells):
                     #print(column)
@@ -738,7 +738,7 @@ try:
 
 
         if __name__ == '__main__':
-                print("Pynesweeper!\nCreated by Andrew Maney! (Main Game Code from github.com)")
+                print("Pynesweeper!\nCreated by Andrew Maney!")
 
                 try:
                     if os.path.isdir(dataFolder):
@@ -760,7 +760,7 @@ try:
 
                     try:
                             if(sys.argv[1] == "-debug" or sys.argv[1] == "-d"):
-                                    print("Started in debug mode.")
+                                    print("[INFO] >> Started in debug mode.")
                                     Debug = 1
                     except:
                             0+0
@@ -793,7 +793,14 @@ try:
                         sys.exit(0)
 
 except Exception as ex:
-        print(ex)
+        exception_type, exception_object, exception_traceback = sys.exc_info()
+        filename = exception_traceback.tb_frame.f_code.co_filename
+        line_number = exception_traceback.tb_lineno
+
+        print("Exception type: ", exception_type)
+        print("File name: ", filename)
+        print("Line number: ", line_number)
+        print("E: {}".format(ex))
         sys.exit(0)
 
 
