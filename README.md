@@ -1,8 +1,6 @@
 # Pynesweeper
 Minesweeper in python 3.10
 <br/><br/>
-
----
 ### Playing Pynesweeper:
  It's just regular minesweeper, but in python!
 
