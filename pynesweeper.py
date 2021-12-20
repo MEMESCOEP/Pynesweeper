@@ -284,8 +284,7 @@ try:
 
 
                 def Custom():
-                        USER_INP = simpledialog.askstring(title="Custom",
-                                          prompt="Tiles per row:")
+                        USER_INP = simpledialog.askstring(title="Custom", prompt="Tiles per row:")
 
                         global currentDifficulty
                         global cellNum
@@ -294,7 +293,7 @@ try:
                         global SwitchingDiff
 
                         if str.isnumeric(USER_INP):
-                                if int(USER_INP) >= 10 and int(USER_INP) <= 100: 
+                                if int(USER_INP) >= 10 and int(USER_INP) <= 50: 
                                         SwitchingDiff = True               
                                         currScriptName = sys.argv[0]
                                         self.close()
@@ -302,7 +301,9 @@ try:
                                         ex = None
                                         ex = Window()
                                         if(Debug == 1):
-                                                print("<Difficulty changed to custom ({} tiles per row) >".format(cellNum))
+                                                print("<Difficulty changed to custom ({} tiles per row)>".format(cellNum))
+                                                if cellNum > 25:
+                                                    print("[ WARNING! ]\n\tUsing large grid sizes will result in slowdowns!")
                                         SwitchingDiff = False     
                                 else:
                                         print("Invalid entry!")
