@@ -2,7 +2,7 @@
 Minesweeper in python 3.10
 <br/><br/>
 ### Playing Pynesweeper:
- It's just regular minesweeper, but in python!
+ It's just minesweeper, but in python!
 
 ---
 <br/>
@@ -24,4 +24,9 @@ Or from Windows Explorer:
 open the 'build.bat' file.
 ```
 
+---
+<br>
 
+### TO-DO:
+ - Add timer in UI
+ - Fix rendering engine for large map support
