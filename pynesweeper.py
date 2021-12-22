@@ -18,6 +18,9 @@ if a button is pressed the value is changed:
 '''
 
 
+import py_compile
+
+
 try:
 
 
@@ -38,8 +41,31 @@ try:
         from random import randint
 
 
-
         #Variables
+        global ex
+        global app
+        global Debug
+        global timePassed
+        global TimerThread
+        global UseTimer
+        global Score
+        global StartTimer
+        global HiScore
+        global BreakThread
+        global SwitchingDiff
+        global file1 #favicon
+        global file2 #tile_1
+        global file3 #tile_2
+        global file4 #tile_3
+        global file5 #tile_4
+        global file6 #tile_5
+        global file7 #tile_6
+        global file8 #tile_7
+        global file9 #tile_8
+        global file10 #tile_clicked
+        global file11 #tile_flag
+        global file12 #tile_mine
+        global file13 #tile_plain
         dataFolder = "MSDT\\"
         icon = b'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'
         tile_1 = b'R0lGODlhEAAQAPcAABwC3OTi5AZBBncgdzQtkZAggwhUBqxyd291qABlYAB2xwBpcbBzADJpAAlvAAJuANAgCLxUAvhhAAFyAABnKABhiQAAJwAqAKguwDJ06wlnEgJhACQA7eZU4BJJAgBGd4AghAEt6yMgEgBUAABh/gBn/wBn/wBl/1BkNgEgACNJAABtALBhbDJnAAllbgIgANhG4BVpZf5sJwFlANggKBVGAv5vAAFyAOhtAnlhACh0AAAAAAAqAAAuAAB0AABpAG9mbAAAAAAAAAAAAAAAAAAAAAAjAAAAAP8gbP+JAAAnAAEAAAD4KADn6QASEgAAAHik4ANdZQAGJwB3AGjTbOZdAAEGAAF3AWAgbOVvABLHCABxAtgA1BUA6P4AEgEAAGCsJvsD6RIjEgAAAO0AAOAAAAIjAHcAAEAzAJ3cANNmAAZ2AP4AB/8Bt/8AZv8AdnAA02UAqQYAZHcA26Z4AGXnAAYSAHcAAACXAAA8AAAGAAB3ANicWBU8U/4GJwF3ANigABVvUP7HJwFxAGoAQCwA6AYAEncAADQAAAABAAAAAMAAANAznBXc6P5mEgF2AGxQ4ufnlxISbQAAdhFor8md9mYnEHYArQBg/gD7/yMS/wAA/wDtBwDgtwACZgB3dtjYVhWUt/7TZgEGdgD+WAD/UwD/JwD/AACI0QHnnQASZwAAdiDLE8naqWZnZHZ227gCAOcAABIAAAAAANgAABUBAP4AAAEAAAygAJ7nAPMSAHQAAAFKzQDZqwBmugB23AI0AX8AAAAAAADAAG5xfGfp6AASElAAAFAMEU1RASBQAC0AACAAYFAA+28AEnIAAHTI4mHol2ISbWwAdmV+ZyDc3FBmEWl2rXiA/mVt/2xQ/20A/2G00XB5nQBQZyoAdi40WHAAqnAAQm3AAADEWFLnU0ESJ1cAACAAAC0BACAAAFIAAEGfcVfc6SBmEkl2AG0BZGEAAGcAAGUAACAAd0QAqWEwZHQA20MCZDoAAAAAAC4AAHIueWFn3XdpSABmACH5BAAAAAAALAAAAAAQABAABwgwAAMIHEiwoMGDCBMqBABA4UCGDR1CjLgQosOHFCVmrHhRIMOLEz8mDLmxo8mTBgMCADs='
@@ -56,18 +82,7 @@ try:
         tile_plain = b'R0lGODlhEAAQAPcAAJyenLy6vKyqrHcgAAAtAiggAAhUACByAHB19ABl5wB2EgBpAFhzsMBpfxZvBgRud+ggzE9U6BhhEgZyAABnAABhAAAAAAAqAFAubMB0ABZnbgRhACQAzOZU6BJJEgBGAIAgAgEtABwgAABUAABhmABn6ABnEgBlAFBk8gEgcBxJBgBtd1hhkcBngxZlBgQgdyBGBJppfhZstwRldyAgAJpGABZvAARyABBtCOJhAiR0AAAAAAAqWAAu4wB0IwBpAHBm6AAA6wAAEgAAAABQ7QDj4AAjAgAAd/8ArP8A6wAcEgEAAADg/gDv/wAj/wAA/4ABNgMAAAAAAAAAAGjubOYDAAGFbgEBAGAJmOUA4BIAIwAAACAAKJoAAhYAAAQAAGBNAvsBABIAAAAAAO0gAODoAAISAHcAAAQzbIPcAKNmAAB2AP4AB/8Bt/8AZv8AdnAAZGUAeAYAyncAfqZ4AGXnAAYSAHcAAACXAAA8AAAGAAB3ACCcuJo8hxYGIAR3ACDkAJpxgBa3IAR3AGoAQCwA6AYAEncAADQATgAB6QAAEsAAABgznJrc6BZmEgR2AGxQ4ufnlxISbQAAdhEEGMnpJ2YSvnYACABg/gD7/xwS/wAA/wDtBwDgtwACZgB3diCcVpqKtxajZgQAdgD+uAD/hwD/IAD/AACI0QHnnQASZwAAdiDLpMnaeGZnynZ2frgCAOcAABIAAAAAACAAAJoBABYAAAQAAAygAJ7nAPMSAHQAAAFKAADZAABmAAB2AAI0AX8AAAAAAADAAG5xfGfp6AASElAAAFAMqE1R6CBQEi0AACAAYFAA+28AEnIAAHTI4mHol2ISbWwAdmV+0CDcDVBmv2l2CHiA/mVt/2xQ/20A/2G00XB5nQBQZyoAdi40WHAAqnAAQm3AAADEuFLnh0ESIFcAACAAAC0BACAAAFIAAEGfcVfc6SBmEkl2AG0BZGEAAGcAAGUAACAAwEQAeGEwynQAfkMAZDoAAAAAAC4AAHIueWFn3XdpSABmACH5BAAAAAAALAAAAAAQABAABwhIAAMIFCiAoMEABQMAWMiwYUOEAARInEhRIgCBEStqvKhQ40aMHityzBjSIkaSIUeWtKhypYCWK2GWlJkSpMuRDnMuHMizZ8+AADs='
         cellNum = 20
         currScriptName = sys.argv[0]
-        currentDifficulty = 1
-        global ex
-        global app
-        global Debug
-        global timePassed
-        global TimerThread
-        global UseTimer
-        global Score
-        global StartTimer
-        global HiScore
-        global BreakThread
-        global SwitchingDiff
+        currentDifficulty = 1        
         SwitchingDiff = False
         BreakThread = False
         HiScore = 0
@@ -76,20 +91,6 @@ try:
         timePassed = 0
         Debug = 0
         Score = 0
-        global file1 #favicon
-        global file2 #tile_1
-        global file3 #tile_2
-        global file4 #tile_3
-        global file5 #tile_4
-        global file6 #tile_5
-        global file7 #tile_6
-        global file8 #tile_7
-        global file9 #tile_8
-        global file10 #tile_clicked
-        global file11 #tile_flag
-        global file12 #tile_mine
-        global file13 #tile_plain
-
         file1 = None #favicon
         file2 = None  #tile_1
         file3 = None  #tile_2
@@ -103,12 +104,6 @@ try:
         file11 = None  #tile_flag
         file12 = None  #tile_mine
         file13 = None  #tile_plain
-        
-
-
-
-
-
 
 
 
@@ -122,9 +117,7 @@ try:
                         if UseTimer == True and StartTimer == True:
                             timePassed += 1
                             if Debug == 1:
-                                print("[INFO] >> Seconds Passed: {}".format(timePassed))
-                        
-                        
+                                print("[INFO] >> Time Passed: {}".format(timePassed))          
 
 
 
@@ -199,14 +192,6 @@ try:
                 global TimerThread
                 global file1
                 super(Window, self).__init__()
-
-
-                
-
-
-
-
-
 
                 # set title
                 self.setWindowTitle("Pynesweeper")
@@ -303,7 +288,7 @@ try:
                                         if(Debug == 1):
                                                 print("[INFO] >> <Difficulty changed to custom ({} tiles per row)>".format(cellNum))
                                                 if cellNum > 25:
-                                                    print("[ WARNING! ] >> Using large grid sizes will result in slowdowns! << [ WARNING! ]")
+                                                    print("[ WARNING! ] >> Using larger grid sizes will result in slowdowns! << [ WARNING! ]")
                                         SwitchingDiff = False     
                                 else:
                                         print("Invalid entry!")
@@ -406,7 +391,8 @@ try:
                 global file11 #tile_flag
                 global file12 #tile_mine
                 global file13 #tile_plain
-
+                global cellNum
+                global Debug
 
                 file1 = QtGui.QIcon(dataFolder + 'favicon.png')
                 file2 = QtGui.QIcon(dataFolder + "tile_1.gif")
@@ -421,9 +407,7 @@ try:
                 file11 = QtGui.QIcon(dataFolder + "tile_flag.gif")
                 file12 = QtGui.QIcon(dataFolder + "tile_mine.gif")
                 file13 = QtGui.QIcon(dataFolder + 'tile_plain.gif')
-                #print("NewGaem Lmao")
-                global cellNum
-                global Debug
+                
                 self.cells = cellNum
                 # create central widget
                 self.centralwidget = QWidget()
@@ -449,9 +433,7 @@ try:
                     horizontal_layout.setSpacing(0)
                 self.show()
                 # set screen to fixed size
-                #self.setFixedSize(400,400)
                 self.setFixedSize(self.size())
-                #print(self.size())
 
             def eventFilter(self, obj, event):
                 global Debug
@@ -494,7 +476,7 @@ try:
                 global Debug
                 global timePassed
                 if(Debug == 1):
-                        print("[INFO] >> Starting new game with {} tiles per row.".format(self.cells))
+                        print("\n\n[INFO] >> Starting new game with {} tiles per row.".format(self.cells))
                 
                 # reset counter of turns and timer
                 self.counterTurns = 0
@@ -536,9 +518,6 @@ try:
                 #Start Timer
                 global TimerThread
                 global UseTimer
-                
-                #UseTimer = False                
-                #time.sleep(1)
                 UseTimer = True
                 
                 
@@ -629,9 +608,7 @@ try:
                                     else:
                                         game_finished.setInformativeText("Score: " + str(0))
                                 else:
-                                    game_finished.setInformativeText("Score: " + str(0))
-
-                                
+                                    game_finished.setInformativeText("Score: " + str(0))                               
                                 
                             
                             else:
@@ -643,6 +620,8 @@ try:
                                         game_finished.setInformativeText("Score: " + str(0))
                                 else:
                                     game_finished.setInformativeText("Score: " + str(0))
+                        else:
+                            game_finished.setInformativeText("Score: " + str(0))
                         StartTimer = False
                         game_finished.setWindowTitle("Pynesweeper")
                         game_finished.setStandardButtons(QMessageBox.Ok)
@@ -680,22 +659,13 @@ try:
             rw = 0
             def update_display(self):
                 if(Debug == 1):
-                                print("[INFO] >> [Updating Cells...]")
+                                print("[INFO] >> Updating Cells...")
                             
                 for column in range(self.cells):
-                    #print(column)
+                    
                     for row in range(self.cells):
-                        #print(row)
-                        #print("R:{} || C:{}".format(row, column))
-                        #if(Debug == 1):
-                        #        print("[Changing tile ({},{})]".format(row,column))
-                        #x = threading.Thread(target=self.DrawCell, args=(column, row))
-                        #x.start()
-                        #x = None
-                        #print(row + column)
                         self.DrawCell(column, row)
-                        #continue
-                        0+0
+                        
                         
                         
 
@@ -738,33 +708,45 @@ try:
 
 
         if __name__ == '__main__':
+                try:
+                            if(sys.argv[1] == "-debug" or sys.argv[1] == "-d"):
+                                    print("[INFO] >> Started in debug mode.")
+                                    Debug = 1
+                except:
+                            0+0
+
+
+
                 print("Pynesweeper!\nCreated by Andrew Maney!")
+                if(Debug == 1):
+                                print("[INFO] >> Checking if MSDT folder exists...")
 
                 try:
                     if os.path.isdir(dataFolder):
+                        if(Debug == 1):
+                                print("[INFO] >> MSDT Folder Exists.")
                         0+0
                     else:
+                            if(Debug == 1):
+                                print("[INFO] >> MSDT Folder does not exist. Creating neccesary folders/files...")
                             os.mkdir(dataFolder)
-                            WriteIMGtoFiles()    
+                            WriteIMGtoFiles()   
+
+
+                    if(Debug == 1):
+                                print("[INFO] >> Loading High Score...") 
 
                     if(os.path.exists(dataFolder + "hiscore.lmfao")):
                         0+0
                     else:
+                        if(Debug == 1):
+                                print("[INFO] >> There is no high score. Writing 0 to high score file...")
                         hiscore = open(dataFolder + "hiscore.lmfao", "w")
                         hiscore.writelines("0")
                         hiscore.close()
 
+
                     
-
-
-
-                    try:
-                            if(sys.argv[1] == "-debug" or sys.argv[1] == "-d"):
-                                    print("[INFO] >> Started in debug mode.")
-                                    Debug = 1
-                    except:
-                            0+0
-
                     
                     hiscore2 = open(dataFolder + "hiscore.lmfao", "r")
                     HiScore = int(hiscore2.read())
@@ -773,12 +755,20 @@ try:
                     UseTimer = True
                     TimerThread = threading.Thread(target=Timer)
                     TimerThread.start()
+
+
+                    if(Debug == 1):
+                                print("[INFO] >> Initializing Window...")
+
+
                     app = QApplication(sys.argv)
                     ex = Window()
+
+
+                    if(Debug == 1):
+                                print("[INFO] >> Setting Window Icon...")
                     
-                    ex.setWindowIcon(QtGui.QIcon(file1)) 
-                    
-                    #open(dataFolder + "tile_plain.gif", "rb")
+                    ex.setWindowIcon(QtGui.QIcon(file1))
                     
                     sys.exit(app.exec_())
                 except Exception as e:
@@ -786,35 +776,25 @@ try:
                         filename = exception_traceback.tb_frame.f_code.co_filename
                         line_number = exception_traceback.tb_lineno
 
-                        print("Exception type: ", exception_type)
+                        print("\n\n\n [ An Error Occurred! ]\nException type: ", exception_type)
                         print("File name: ", filename)
                         print("Line number: ", line_number)
                         print("E: {}".format(e))
                         sys.exit(0)
+
 
 except Exception as ex:
         exception_type, exception_object, exception_traceback = sys.exc_info()
         filename = exception_traceback.tb_frame.f_code.co_filename
         line_number = exception_traceback.tb_lineno
 
-        print("Exception type: ", exception_type)
+        print("\n\n\n [ An Error Occurred! ]\nException type: ", exception_type)
         print("File name: ", filename)
         print("Line number: ", line_number)
         print("E: {}".format(ex))
         sys.exit(0)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#  🙰□︎♏︎ ♌︎♓︎♎︎□︎❍︎♏︎ ♑︎♋︎♏︎ ●︎❍︎♋︎□︎
+        
+        
+        
