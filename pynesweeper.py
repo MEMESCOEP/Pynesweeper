@@ -18,9 +18,6 @@ if a button is pressed the value is changed:
 '''
 
 
-import py_compile
-
-
 try:
 
 
