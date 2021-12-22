@@ -39,6 +39,8 @@ try:
         from PyQt5.QtCore import QEvent, Qt, QObject
         from functools import partial
         from random import randint
+        import numpy as np
+        import itertools
 
 
         #Variables
@@ -66,6 +68,8 @@ try:
         global file11 #tile_flag
         global file12 #tile_mine
         global file13 #tile_plain
+        global buttons
+        buttons = []
         dataFolder = "MSDT\\"
         icon = b'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'
         tile_1 = b'R0lGODlhEAAQAPcAABwC3OTi5AZBBncgdzQtkZAggwhUBqxyd291qABlYAB2xwBpcbBzADJpAAlvAAJuANAgCLxUAvhhAAFyAABnKABhiQAAJwAqAKguwDJ06wlnEgJhACQA7eZU4BJJAgBGd4AghAEt6yMgEgBUAABh/gBn/wBn/wBl/1BkNgEgACNJAABtALBhbDJnAAllbgIgANhG4BVpZf5sJwFlANggKBVGAv5vAAFyAOhtAnlhACh0AAAAAAAqAAAuAAB0AABpAG9mbAAAAAAAAAAAAAAAAAAAAAAjAAAAAP8gbP+JAAAnAAEAAAD4KADn6QASEgAAAHik4ANdZQAGJwB3AGjTbOZdAAEGAAF3AWAgbOVvABLHCABxAtgA1BUA6P4AEgEAAGCsJvsD6RIjEgAAAO0AAOAAAAIjAHcAAEAzAJ3cANNmAAZ2AP4AB/8Bt/8AZv8AdnAA02UAqQYAZHcA26Z4AGXnAAYSAHcAAACXAAA8AAAGAAB3ANicWBU8U/4GJwF3ANigABVvUP7HJwFxAGoAQCwA6AYAEncAADQAAAABAAAAAMAAANAznBXc6P5mEgF2AGxQ4ufnlxISbQAAdhFor8md9mYnEHYArQBg/gD7/yMS/wAA/wDtBwDgtwACZgB3dtjYVhWUt/7TZgEGdgD+WAD/UwD/JwD/AACI0QHnnQASZwAAdiDLE8naqWZnZHZ227gCAOcAABIAAAAAANgAABUBAP4AAAEAAAygAJ7nAPMSAHQAAAFKzQDZqwBmugB23AI0AX8AAAAAAADAAG5xfGfp6AASElAAAFAMEU1RASBQAC0AACAAYFAA+28AEnIAAHTI4mHol2ISbWwAdmV+ZyDc3FBmEWl2rXiA/mVt/2xQ/20A/2G00XB5nQBQZyoAdi40WHAAqnAAQm3AAADEWFLnU0ESJ1cAACAAAC0BACAAAFIAAEGfcVfc6SBmEkl2AG0BZGEAAGcAAGUAACAAd0QAqWEwZHQA20MCZDoAAAAAAC4AAHIueWFn3XdpSABmACH5BAAAAAAALAAAAAAQABAABwgwAAMIHEiwoMGDCBMqBABA4UCGDR1CjLgQosOHFCVmrHhRIMOLEz8mDLmxo8mTBgMCADs='
@@ -197,7 +201,8 @@ try:
                 self.setWindowTitle("Pynesweeper")
                 # set icon
                 self.setWindowIcon(QtGui.QIcon(dataFolder + "tile_pain.gif"))       
-
+                global buttons
+                buttons = []
 
                 self.cells = cellNum
                 self.initialArray = []
@@ -206,6 +211,7 @@ try:
                 for row in range(self.cells):
                     line = [0]*self.cells
                     self.initialArray.append(line)
+                    #print(line)
 
 
                 def Easy():
@@ -300,23 +306,39 @@ try:
                 
 
                 def Quit():
-                        reply = QMessageBox.question(self, 'Are you sure?', 'Are you sure you want to close the game?',
-                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                        global UseTimer
+                        global StartTimer
+                        global BreakThread
+                        if(StartTimer == False):
+                                #global UseTimer
+                                #global StartTimer
+                                #global BreakThread
+                                
 
-                        if reply == QMessageBox.Yes:
-                            global UseTimer
-                            global StartTimer
-                            global BreakThread
-
-                            StartTimer = False
-                            UseTimer = False
-                            BreakThread = True
-                            #event.accept()
-                            print('Game closed')
-                            sys.exit(0)
+                                StartTimer = False
+                                UseTimer = False
+                                BreakThread = True
+                                #event.accept()
+                                print('Game closed')
+                                sys.exit(0)
                         else:
-                            0+0
-                            #event.ignore()
+                            reply = QMessageBox.question(self, 'Are you sure?', 'Are you sure you want to close the game?',
+                                QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+                            if reply == QMessageBox.Yes:
+                                #global UseTimer
+                                #global StartTimer
+                                #global BreakThread
+
+                                StartTimer = False
+                                UseTimer = False
+                                BreakThread = True
+                                #event.accept()
+                                print('Game closed')
+                                sys.exit(0)
+                            else:
+                                0+0
+                                #event.ignore()
                              
                                     
 
@@ -359,15 +381,28 @@ try:
 
 
             def closeEvent(self, event):
+                global UseTimer
+                global StartTimer
+                global BreakThread
                 global SwitchingDiff
-                if SwitchingDiff == False:
+                if(StartTimer == False):
+                        #global UseTimer
+                        #global StartTimer
+                        #global BreakThread
+
+                        StartTimer = False
+                        UseTimer = False
+                        BreakThread = True
+                        event.accept()
+                        print('Game closed')
+                if SwitchingDiff == False and StartTimer:
                     reply = QMessageBox.question(self, 'Are you sure?', 'Are you sure you want to close the game?',
                             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
                     if reply == QMessageBox.Yes:
-                        global UseTimer
-                        global StartTimer
-                        global BreakThread
+                        #global UseTimer
+                        #global StartTimer
+                        #global BreakThread
 
                         StartTimer = False
                         UseTimer = False
@@ -393,6 +428,8 @@ try:
                 global file13 #tile_plain
                 global cellNum
                 global Debug
+                global buttons
+                buttons = []
 
                 file1 = QtGui.QIcon(dataFolder + 'favicon.png')
                 file2 = QtGui.QIcon(dataFolder + "tile_1.gif")
@@ -475,6 +512,23 @@ try:
 
                 global Debug
                 global timePassed
+                global buttons
+                global StartTimer
+                buttons = []
+                #buttons = []
+
+
+                if(StartTimer):
+                     reply = QMessageBox.question(self, 'Are you sure?', 'Are you sure you want to start a new game?',
+                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+                     if reply == QMessageBox.Yes:
+                        StartTimer = False
+                        self.init_game()
+                     else:
+                         return
+
+
                 if(Debug == 1):
                         print("\n\n[INFO] >> Starting new game with {} tiles per row.".format(self.cells))
                 
@@ -482,6 +536,7 @@ try:
                 self.counterTurns = 0
                 timePassed = 0
 
+                #print([0 for i in range(self.cells)]for j in range(self.cells))
                 # initialize array with values
                 self.initialArray=[[0 for i in range(self.cells)]for j in range(self.cells)]
 
@@ -657,21 +712,95 @@ try:
 
             Col = 0
             rw = 0
+            
             def update_display(self):
+                #global buttons
                 if(Debug == 1):
                                 print("[INFO] >> Updating Cells...")
                             
-                for column in range(self.cells):
+                #threads = []
+                #print(self.initialArray)
+                
+                
+                for c in range(cellNum):
+                        for r in range(cellNum):
+                            column = c
+                            row = r
+                            if self.initialArray[row][column] <= 9:
+                                buttons.append("{}:{}".format([row, column], 13))
+                                #self.button[row, column].setIcon(file13)
+                            elif self.initialArray[row][column] == 10:
+                                buttons.append("{}:{}".format([row, column], 10))
+                                #self.button[row, column].setIcon(file10)
+                            elif self.initialArray[row][column] == 11:
+                                buttons.append("{}:{}".format([row, column], 2))
+                                #self.button[row, column].setIcon(file2)
+                            elif self.initialArray[row][column] == 12:
+                                buttons.append("{}:{}".format([row, column], 3))
+                                #self.button[row, column].setIcon(file3)
+                            elif self.initialArray[row][column] == 13:
+                                buttons.append("{}:{}".format([row, column], 4))
+                                #self.button[row, column].setIcon(file4)
+                            elif self.initialArray[row][column] == 14:
+                                buttons.append("{}:{}".format([row, column], 5))
+                                #self.button[row, column].setIcon(file5)
+                            elif self.initialArray[row][column] == 15:
+                                buttons.append("{}:{}".format([row, column], 6))
+                                #self.button[row, column].setIcon(file6)
+                            elif self.initialArray[row][column] == 16:
+                                buttons.append("{}:{}".format([row, column], 7))
+                                #self.button[row, column].setIcon(file7)
+                            elif self.initialArray[row][column] == 19:
+                                buttons.append("{}:{}".format([row, column], 11))
+                                #self.button[row, column].setIcon(file11)
+                            elif self.initialArray[row][column] == 29:
+                                buttons.append("{}:{}".format([row, column], 12))
+                                #self.button[row, column].setIcon(file12)
+                
+                #t = threading.Thread(target=self.DrawCell)
+                #t.start()
+                self.DrawCell()
+
+                """return
+                for button in buttons:
+                    iconNum = int(str(button).split(":")[1])
+                    r = int(int(str(button).split(":")[0].strip('][').split(', ')[0]))
+                    c = int(int(str(button).split(":")[0].strip('][').split(', ')[1]))
+                    #print("C:{}||r:{}".format(c,r))
+                    column = c
+                    row = r
+                    if iconNum == 13:                        
+                        self.button[row, column].setIcon(file13)
+                    elif iconNum == 12:                        
+                        self.button[row, column].setIcon(file12)
+                    elif iconNum == 11:                        
+                        self.button[row, column].setIcon(file11)
+                    elif iconNum == 10:                        
+                        self.button[row, column].setIcon(file10)
+                    elif iconNum == 9:                        
+                        self.button[row, column].setIcon(file9)
+                    elif iconNum == 8:                        
+                        self.button[row, column].setIcon(file8)
+                    elif iconNum == 7:                        
+                        self.button[row, column].setIcon(file7)
+                    elif iconNum == 6:                        
+                        self.button[row, column].setIcon(file6)
+                    elif iconNum == 5:                        
+                        self.button[row, column].setIcon(file5)
+                    elif iconNum == 4:                        
+                        self.button[row, column].setIcon(file4)
+                    elif iconNum == 3:                        
+                        self.button[row, column].setIcon(file3)
+                    elif iconNum == 2:                        
+                        self.button[row, column].setIcon(file2)
                     
-                    for row in range(self.cells):
-                        self.DrawCell(column, row)
-                        
-                        
-                        
+                    """
+                    #print(buttons)
 
+                
 
-            def DrawCell(self, column, row):
-                global file1 #favicon
+            def DrawCell(self):
+                """global file1 #favicon
                 global file2 #tile_1
                 global file3 #tile_2
                 global file4 #tile_3
@@ -705,6 +834,46 @@ try:
                     self.button[row, column].setIcon(file11)
                 elif self.initialArray[row][column] == 29:
                     self.button[row, column].setIcon(file12)
+                    """
+
+
+
+                iter_obj = itertools.cycle(buttons)
+                count=0
+                while count < len(buttons):
+                    #print(next(iter_obj))
+                    btn = next(iter_obj)
+                    iconNum = int(str(btn).split(":")[1])
+                    r = int(int(str(btn).split(":")[0].strip('][').split(', ')[0]))
+                    c = int(int(str(btn).split(":")[0].strip('][').split(', ')[1]))
+                    #print("C:{}||r:{}".format(c,r))
+                    column = c
+                    row = r
+                    if iconNum == 13:                        
+                        self.button[row, column].setIcon(file13)
+                    elif iconNum == 12:                        
+                        self.button[row, column].setIcon(file12)
+                    elif iconNum == 11:                        
+                        self.button[row, column].setIcon(file11)
+                    elif iconNum == 10:                        
+                        self.button[row, column].setIcon(file10)
+                    elif iconNum == 9:                        
+                        self.button[row, column].setIcon(file9)
+                    elif iconNum == 8:                        
+                        self.button[row, column].setIcon(file8)
+                    elif iconNum == 7:                        
+                        self.button[row, column].setIcon(file7)
+                    elif iconNum == 6:                        
+                        self.button[row, column].setIcon(file6)
+                    elif iconNum == 5:                        
+                        self.button[row, column].setIcon(file5)
+                    elif iconNum == 4:                        
+                        self.button[row, column].setIcon(file4)
+                    elif iconNum == 3:                        
+                        self.button[row, column].setIcon(file3)
+                    elif iconNum == 2:                        
+                        self.button[row, column].setIcon(file2)
+                    count += 1
 
 
         if __name__ == '__main__':
