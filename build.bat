@@ -19,6 +19,9 @@ goto Done
 echo Building (DEBUG MODE)...
 pyinstaller --onefile --debug=all pynesweeper.py
 if "%ERRORLEVEL%" NEQ "0" goto buildError
+echo Moving...
+move /Y .\dist\pynesweeper.exe .\pynesweeper-debug.exe
+echo Done.
 echo Done.
 goto Done
 
@@ -26,7 +29,7 @@ goto Done
 
 :Done
 echo Moving...
-move /Y .\dist\pynesweeper.exe .\ 
+move /Y .\dist\pynesweeper.exe .\pynesweeper.exe
 echo Done.
 
 
