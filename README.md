@@ -1,5 +1,5 @@
 # Pynesweeper
-Minesweeper in python 3.10
+Minesweeper in python 3.10.1
 <br/><br/>
 ### Playing Pynesweeper:
  It's just minesweeper, but in python!
